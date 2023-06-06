@@ -22,7 +22,8 @@ def getData(userDetails):
         # print(date.string)
         dateString = date.string
         dateleaves = list()
-        for sibling in siblings:
+        for i in range(0, 7):
+            sibling = siblings[i]
             if sibling["bgcolor"] == "#9f0000":
                 # print(sibling.find("font").string)
                 leavedate = sibling.find("font").string

@@ -31,7 +31,7 @@ def getData(userDetails):
             # print(sibling.find("font").string)
         # print("**************************************")
         leaveData["leaves"].append({dateString: dateleaves})
-    print(leaveData)
+    return leaveData
 """
 {
     "uid": "2108037",

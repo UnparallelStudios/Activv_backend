@@ -1,5 +1,6 @@
 import requests as rq
 from bs4 import BeautifulSoup as bs
+from courseCodes import courseCodes
 
 def getData(userDetails):
     result = ""
@@ -26,8 +27,8 @@ def getData(userDetails):
             sibling = siblings[i]
             if sibling["bgcolor"] == "#9f0000":
                 # print(sibling.find("font").string)
-                leavedate = sibling.find("font").string
-                dateleaves.append(leavedate)
+                leaveSub = sibling.find("font").string
+                dateleaves.append(courseCodes[leaveSub])
             # print(sibling.find("font").string)
         # print("**************************************")
         leaveData["leaves"].append({dateString: dateleaves})

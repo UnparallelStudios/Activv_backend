@@ -1,6 +1,6 @@
 import requests as rq
 from bs4 import BeautifulSoup as bs
-from courseCodes import courseCodes
+from utilities.courseCodes import courseCodes
 
 def getData(userDetails):
     result = ""
@@ -32,7 +32,8 @@ def getData(userDetails):
             # print(sibling.find("font").string)
         # print("**************************************")
         leaveData["leaves"].append({dateString: dateleaves})
-    print(leaveData)
+    # print(leaveData)
+    return leaveData
 """
 {
     "uid": "2108037",

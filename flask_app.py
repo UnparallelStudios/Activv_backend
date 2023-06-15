@@ -28,20 +28,20 @@ def home() :
 def login_pg() :
     if request.method == "POST" :
         login_details = request.json
-        user = extract_profile_details(login_details)
+        user_details = extract_profile_details(login_details)
+        print(user_details)
         
         # If extraction successfully worked then that means user details entered are correct
-        if not user :
+        if not user_details :
             return jsonify({
                 "Status": "Failure"
             })
         
         else :
             # Setting up the session data
-            session["User_name"] = " ".join([i.capitalize() for i in user["User_name"].split()])
-            session["User_image"] = user["User_image"]
+            session["User_name"] = " ".join([i.capitalize() for i in user_details["User_name"].split()])
+            session["User_image"] = user_details["User_image"]
             
-            print(session["User_name"], session["User_image"])
             return jsonify({
                 "Status": "Success"
             })

@@ -22,12 +22,16 @@ def extract_profile_details(login_details) :
     for div in soup.find_all("div") :
             try :
                 if div["class"] == ["scroller"] :
-                    text = div.text
-                    text = text[text.index(":")+1: -1].strip()
-                    
+                    # Scrape the users name
+                    name = div.text
+                    name = name[name.index(":")+1: -1].strip()
+                    # Scrape the users image
+                    img = soup.find_all("img")[2]
+                    img = "https://www.rajagiritech.ac.in/stud/ktu/" + img["src"][3:]
+
                     return {
-                        "User_name": text,
-                        "User_image": ""
+                        "User_name": name,
+                        "User_image": img,
                     }
                     
             except :

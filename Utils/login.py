@@ -11,7 +11,7 @@ def login_n_scrape(login_details, url=False) :
             response = session.post("https://www.rajagiritech.ac.in/stud/ktu/student/varify.asp", login_details)
             if url :
                 response = session.get(url)
-    
+
     return response
 
 

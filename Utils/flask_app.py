@@ -33,14 +33,14 @@ def login_pg() :
         login_details = request.json
         user_details = extract_profile_details(login_details)
         print(user_details)
-        
+
         # If extraction successfully worked then that means user details entered are correct
         if not user_details :
             return jsonify({
                 "Status": "Failure",
                 "Response": "Wrong username or password"
             })
-        
+
         else :
             # Setting up the session data
             session["User_name"] = " ".join([i.capitalize() for i in user_details["User_name"].split()])
@@ -51,12 +51,12 @@ def login_pg() :
                 print("User_name"in session)
             except Exception as ex :
                 print(f"Exception is {ex}")
-            
+
             return jsonify({
                 "Status": "Success",
                 "Response": "User has been successfully logged in"
             })
-            
+
     elif request.method == "GET" :
         return {
             "Status": "Success",

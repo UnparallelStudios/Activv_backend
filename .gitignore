@@ -163,3 +163,4 @@ cython_debug/
 # Development files
 rough.py
 flask_session/
+.gitignore

@@ -58,10 +58,23 @@ def login_pg() :
             })
 
     elif request.method == "GET" :
-        return {
+        return jsonify({
             "Status": "Success",
             "Response": "Login Page"
-        }
+        })
+
+
+@app.route("/logout", methods=["GET"])
+def logout() :
+    session.pop("User_name")
+    session.pop("User_image")
+    session.pop("Login_details")
+
+    return jsonify({
+        "Status": "Success",
+        "Response": "User has been logged out"
+    })
+    
 
 
 if __name__ == "__main__" :

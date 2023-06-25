@@ -3,4 +3,4 @@ Werkzeug==2.2.3
 Flask-Session==0.4.0
 Flask-Cors==3.0.10
 requests==2.29.0
-bs4==4.12.2
+bs4

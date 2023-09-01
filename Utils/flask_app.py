@@ -1,30 +1,46 @@
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from Utils.login import get_attendence_details, extract_profile_details
-from flask_session import Session
 
 
 
 app = Flask(__name__)
 CORS(app)
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
 
 
-@app.route("/", methods=["GET"])
+@app.route("/home", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def home() :
-    if request.method == "GET" :
-        if not session.get("User_name") :
+    login_details = request.json
+    if login_details["Userid"] == "" :
+        return jsonify({
+            "Status": "Failure",
+            "Response" : "User not logged in"
+        })
+
+    return jsonify({
+            "Status": "Success",
+            "Response": get_attendence_details(login_details)
+        })
+
+
+@app.route("/profile", methods=["POST"])
+def profile_pg() :
+    if request.method == "POST" :
+        login_details = request.json
+        if login_details["Userid"] == "" :
             return jsonify({
                 "Status": "Failure",
                 "Response" : "User not logged in"
             })
-
+        
+        user_details = extract_profile_details(login_details)
+        print(user_details)
+        
         return jsonify({
-                "Status": "Success",
-                "Response": get_attendence_details(session["Login_details"])
-            })
+            "Status": "Success",
+            **user_details
+        })
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -42,11 +58,6 @@ def login_pg() :
             })
 
         else :
-            # Setting up the session data
-            session["User_name"] = " ".join([i.capitalize() for i in user_details["User_name"].split()])
-            session["User_image"] = user_details["User_image"]
-            session["Login_details"] = login_details
-
             return jsonify({
                 "Status": "Success",
                 "Response": "User has been successfully logged in"
@@ -57,18 +68,6 @@ def login_pg() :
             "Status": "Success",
             "Response": "Login Page"
         })
-
-
-@app.route("/logout", methods=["GET"])
-def logout() :
-    session.pop("User_name")
-    session.pop("User_image")
-    session.pop("Login_details")
-
-    return jsonify({
-        "Status": "Success",
-        "Response": "User has been logged out"
-    })
 
 
 

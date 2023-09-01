@@ -1,37 +1,47 @@
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from Utils.login import get_attendence_details, extract_profile_details
-from flask_session import Session
-
 
 
 app = Flask(__name__)
 CORS(app)
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
 
 
-@app.route("/", methods=["GET"])
+@app.route("/", methods=["POST"])
+@app.route("/home", methods=["POST"])
 def home() :
-    if request.method == "GET" :
-        if not session.get("User_name") :
-            return jsonify({
-                "Status": "Failure",
-                "Response" : "User not logged in"
-            })
+    if request.method == "POST" :
+        response = get_user_details_n_verify_login(request.args)
+        if response["Status"] == "Failure" :
+            return response
 
         return jsonify({
                 "Status": "Success",
-                "Response": get_attendence_details(session["Login_details"])
+                "Response": get_attendence_details(response["login_details"])
             })
 
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/profile", methods=["POST"])
+def profile_pg() :
+    if request.method == "POST" :
+        response = get_user_details_n_verify_login(request.args)
+        if response["Status"] == "Failure" :
+            return response
+        
+        user_details = extract_profile_details(response["login_details"])
+        
+        return jsonify({
+            "Status": "Success",
+            **user_details
+        })
+
+
+@app.route("/login", methods=["POST"])
 def login_pg() :
     if request.method == "POST" :
-        login_details = request.json
-        user_details = extract_profile_details(login_details)
+        response = get_user_details_n_verify_login(request.args)
+        
+        user_details = extract_profile_details(response["login_details"])
         print(user_details)
 
         # If extraction successfully worked then that means user details entered are correct
@@ -42,34 +52,31 @@ def login_pg() :
             })
 
         else :
-            # Setting up the session data
-            session["User_name"] = " ".join([i.capitalize() for i in user_details["User_name"].split()])
-            session["User_image"] = user_details["User_image"]
-            session["Login_details"] = login_details
-
             return jsonify({
                 "Status": "Success",
                 "Response": "User has been successfully logged in"
             })
 
-    elif request.method == "GET" :
-        return jsonify({
-            "Status": "Success",
-            "Response": "Login Page"
-        })
 
-
-@app.route("/logout", methods=["GET"])
-def logout() :
-    session.pop("User_name")
-    session.pop("User_image")
-    session.pop("Login_details")
-
-    return jsonify({
+def get_user_details_n_verify_login(args) :
+    user_id = args.get("Userid", default="")
+    psswd = args.get("Password", default="")
+    login_details = {
+        "Userid": user_id,
+        "Password": psswd
+    }
+    
+    if user_id == "" :
+        return {
+            "Status": "Failure",
+            "Response" : "User not logged in"
+        }
+    
+    return {
         "Status": "Success",
-        "Response": "User has been logged out"
-    })
-
+        "Response": "User logged in",
+        "login_details": login_details
+    }
 
 
 if __name__ == "__main__" :

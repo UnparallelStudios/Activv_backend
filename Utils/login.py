@@ -26,12 +26,25 @@ def extract_profile_details(login_details) :
                 name = div.text
                 name = name[name.index(":")+1: -1].strip()
                 # Scrape the users image
-                img = soup.find_all("img")[5]
-                img = "https://www.rajagiritech.ac.in/stud/ktu/" + img["src"][3:]
+                imgs = soup.find_all("img")
+                # Extract the photo and sign file names
+                for i in imgs :
+                    print(f"i[src]: {i['src']}")
+                    img = i["src"]
+                    if img[-14: -19: -1][-1::-1] == "Photo" :
+                        img_name = img
+                    elif img[-14: -18: -1][-1::-1] == "sign" :
+                        sign_name = img
+                
+                img_url = "https://www.rajagiritech.ac.in/stud/ktu/" + img_name[3:]
+                sign_url = "https://www.rajagiritech.ac.in/stud/ktu/" + sign_name[3:]
+                print(img_url)
 
                 return {
                     "User_name": name,
-                    "User_image": img,
+                    "Userid": login_details["Userid"],
+                    "User_image": img_url,
+                    "User_sign": sign_url
                 }
 
         except :

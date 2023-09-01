@@ -8,9 +8,9 @@ def login_n_scrape(login_details, url=False) :
     If url is False or None, it simply logs the user in
     """
     with rq.Session() as session :
-            response = session.post("https://www.rajagiritech.ac.in/stud/ktu/student/varify.asp", login_details)
-            if url :
-                response = session.get(url)
+        response = session.post("https://www.rajagiritech.ac.in/stud/ktu/student/varify.asp", login_details)
+        if url :
+            response = session.get(url)
 
     return response
 
@@ -20,23 +20,23 @@ def extract_profile_details(login_details) :
     
     soup = bs(response.content, "html.parser")
     for div in soup.find_all("div") :
-            try :
-                if div["class"] == ["scroller"] :
-                    # Scrape the users name
-                    name = div.text
-                    name = name[name.index(":")+1: -1].strip()
-                    # Scrape the users image
-                    img = soup.find_all("img")[2]
-                    img = "https://www.rajagiritech.ac.in/stud/ktu/" + img["src"][3:]
+        try :
+            if div["class"] == ["scroller"] :
+                # Scrape the users name
+                name = div.text
+                name = name[name.index(":")+1: -1].strip()
+                # Scrape the users image
+                img = soup.find_all("img")[5]
+                img = "https://www.rajagiritech.ac.in/stud/ktu/" + img["src"][3:]
 
-                    return {
-                        "User_name": name,
-                        "User_image": img,
-                    }
-                    
-            except :
-                continue
-    
+                return {
+                    "User_name": name,
+                    "User_image": img,
+                }
+
+        except :
+            continue
+
     return False
 
 

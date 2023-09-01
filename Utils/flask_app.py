@@ -46,11 +46,6 @@ def login_pg() :
             session["User_name"] = " ".join([i.capitalize() for i in user_details["User_name"].split()])
             session["User_image"] = user_details["User_image"]
             session["Login_details"] = login_details
-            try :
-                print(f"User name is: {session['User_name']}")
-                print("User_name"in session)
-            except Exception as ex :
-                print(f"Exception is {ex}")
 
             return jsonify({
                 "Status": "Success",
@@ -74,7 +69,7 @@ def logout() :
         "Status": "Success",
         "Response": "User has been logged out"
     })
-    
+
 
 
 if __name__ == "__main__" :

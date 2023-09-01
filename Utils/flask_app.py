@@ -11,17 +11,18 @@ CORS(app)
 @app.route("/home", methods=["GET", "POST"])
 @app.route("/", methods=["GET", "POST"])
 def home() :
-    login_details = request.json
-    if login_details["Userid"] == "" :
-        return jsonify({
-            "Status": "Failure",
-            "Response" : "User not logged in"
-        })
+    if request.method == "POST" :
+        login_details = request.json
+        if login_details["Userid"] == "" :
+            return jsonify({
+                "Status": "Failure",
+                "Response" : "User not logged in"
+            })
 
-    return jsonify({
-            "Status": "Success",
-            "Response": get_attendence_details(login_details)
-        })
+        return jsonify({
+                "Status": "Success",
+                "Response": get_attendence_details(login_details)
+            })
 
 
 @app.route("/profile", methods=["POST"])

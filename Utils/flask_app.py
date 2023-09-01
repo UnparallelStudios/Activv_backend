@@ -8,8 +8,8 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route("/home", methods=["GET", "POST"])
-@app.route("/", methods=["GET", "POST"])
+@app.route("/home", methods=["POST"])
+@app.route("/", methods=["POST"])
 def home() :
     if request.method == "POST" :
         login_details = request.json
@@ -44,7 +44,7 @@ def profile_pg() :
         })
 
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/login", methods=["POST"])
 def login_pg() :
     if request.method == "POST" :
         login_details = request.json
@@ -63,13 +63,6 @@ def login_pg() :
                 "Status": "Success",
                 "Response": "User has been successfully logged in"
             })
-
-    elif request.method == "GET" :
-        return jsonify({
-            "Status": "Success",
-            "Response": "Login Page"
-        })
-
 
 
 if __name__ == "__main__" :

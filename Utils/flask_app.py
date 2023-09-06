@@ -6,7 +6,7 @@ from Utils.db_manager import DbManager
 
 app = Flask(__name__)
 CORS(app)
-db_manager = None
+db_manager = DbManager()
 
 @app.route("/home", methods=["POST"])
 @app.route("/", methods=["POST"])
@@ -20,11 +20,14 @@ def home() :
                 "Response" : "User not logged in"
             })
 
-        attendence_details = get_attendence_details(login_details)
+        data = get_attendence_details(login_details)
+        classes_count = db_manager.total_no_classes()
+        print(data)
+        data["Total_classes"] = classes_count
         
         return jsonify({
                 "Status": "Success",
-                "Response": attendence_details
+                "Response": data
             })
 
 
@@ -41,7 +44,7 @@ def profile_pg() :
 
         user_details = extract_profile_details(login_details)
         print(user_details)
-        
+
         return jsonify({
             "Status": "Success",
             **user_details
@@ -54,7 +57,7 @@ def login_pg() :
         response = request.json
         login_details = {key: response[key] for key in response if key in ["Userid", "Password"]}
         sem, branch = response["Sem"], response["Branch"]
-        
+
         user_details = extract_profile_details(login_details)
         print(user_details)
 
@@ -66,8 +69,7 @@ def login_pg() :
             })
 
         else :
-            # Initialize the db manager
-            db_manager = DbManager(sem=sem, branch=branch)
+            db_manager.load_db(sem, branch)
             
             return jsonify({
                 "Status": "Success",
@@ -75,10 +77,10 @@ def login_pg() :
             })
 
 
-# @app.route("/logout", methods=["POST"])
-# def logout() :
-#     if request.method == "POST" :
-#         db_manager
+@app.route("/logout", methods=["POST"])
+def logout() :
+    if request.method == "POST" :
+        db_manager.logout()
 
 
 if __name__ == "__main__" :

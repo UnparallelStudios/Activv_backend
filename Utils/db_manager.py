@@ -6,27 +6,28 @@ from pymongo.server_api import ServerApi
 
 
 class DbManager :
-    def __init__(self, sem="S4", branch="AD") :
+    def __init__(self) :
         self.uri = os.environ.get("URI")
         self.client = MongoClient(self.uri, server_api=ServerApi('1'))
         print("Connection established with mongodb")
+        
+        self.db = None
+        self.collection = None
 
+
+    def load_db(self, sem, branch) :
         # finds the appropriate database from the current year and the given semester
         self.db = self.client[f"{sem}-{datetime.today().year}"]
         self.collection = self.db[branch]
 
         
     def total_no_classes(self) :
-        return self.collection.find({}, {"_id": 0})
-
-
-
-if __name__ == "__main__" :
-    from dotenv import load_dotenv
-    
-    load_dotenv()
-
-    db_manager = DbManager()
-    total = db_manager.total_no_classes()
-    for i in total :
-        print(i)
+        """Total no of classes per subject"""
+        if self.collection is not None :
+            return self.collection.find({}, {"_id": 0})[0]
+        else :
+            return None
+        
+    def logout(self) :
+        self.db = None
+        self.collection = None

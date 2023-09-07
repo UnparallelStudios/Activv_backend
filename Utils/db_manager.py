@@ -8,6 +8,7 @@ from pymongo.server_api import ServerApi
 class DbManager :
     def __init__(self) :
         self.uri = os.environ.get("URI")
+        print(f"URI is : {self.uri}")
         self.client = MongoClient(self.uri, server_api=ServerApi('1'))
         print("Connection established with mongodb")
         

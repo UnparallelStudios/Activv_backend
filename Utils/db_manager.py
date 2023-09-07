@@ -20,6 +20,7 @@ class DbManager :
         ch1, ch2 = f"{sem}-{datetime.today().year}", f"{sem}-{datetime.today().year-1}"
         print(f"ch1, ch2: {ch1}, {ch2}")
         db_names = self.client.list_database_names()
+        print(f"db_names: {db_names}")
         db = ch1 if ch1 in db_names else ch2 if ch2 in db_names else None
         print(f"db: {db}")
         if db :

@@ -27,6 +27,7 @@ class DbManager :
         if db :
             collection_names = self.client[db].list_collection_names()
             print(f"collection_names: {collection_names}")
+            print(f"branch: {branch} collection_names: {collection_names} {branch in collection_names}")
             if branch in collection_names :
                 print("IN BRANCH")
                 self.db = self.client[db]

@@ -69,18 +69,12 @@ def login_pg() :
             })
 
         else :
-            status = db_manager.load_db(sem, branch)
-            print(f"status: {status}")
-            if status :
-                return jsonify({
-                    "Status": "Success",
-                    "Response": "User has been successfully logged in"
-                })
-            else :
-                return jsonify({
-                    "Status": "Failure",
-                    "Response": "Invalid semester or branch details"
-                })
+            db_manager.load_db(sem, branch)
+            
+            return jsonify({
+                "Status": "Success",
+                "Response": "User has been successfully logged in"
+            })
 
 
 @app.route("/logout", methods=["POST"])

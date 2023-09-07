@@ -32,6 +32,7 @@ class DbManager :
                 print("IN BRANCH")
                 self.db = self.client[db]
                 self.collection = self.db[branch]
+                print(f"self.collection in login: {self.collection}")
                 return 1
             else :
                 print("NOT IN BRANCH")                
@@ -41,6 +42,7 @@ class DbManager :
         
     def total_no_classes(self) :
         """Total no of classes per subject"""
+        print(f"self.collection in total: {self.collection}")
         if self.collection is not None :
             return self.collection.find({}, {"_id": 0})[0]
         else :

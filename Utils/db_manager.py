@@ -31,9 +31,9 @@ class DbManager :
                 print("IN BRANCH")
                 self.db = self.client[db]
                 self.collection = self.db[branch]
+                return 1
             else :
                 print("NOT IN BRANCH")                
-                return 1
         print("Did not enter condition")
         return 0
 

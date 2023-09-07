@@ -28,9 +28,11 @@ class DbManager :
             collection_names = self.client[db].list_collection_names()
             print(f"collection_names: {collection_names}")
             if branch in collection_names :
+                print("IN BRANCH")
                 self.db = self.client[db]
                 self.collection = self.db[branch]
-                
+            else :
+                print("NOT IN BRANCH")                
                 return 1
         print("Did not enter condition")
         return 0

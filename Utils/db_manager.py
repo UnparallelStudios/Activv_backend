@@ -35,7 +35,7 @@ class DbManager :
                 print(f"self.collection in login: {self.collection}")
                 return 1
             else :
-                print("NOT IN BRANCH")                
+                print("NOT IN BRANCH")
         print("Did not enter condition")
         return 0
 

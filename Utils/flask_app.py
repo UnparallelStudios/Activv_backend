@@ -70,6 +70,7 @@ def login_pg() :
 
         else :
             status = db_manager.load_db(sem, branch)
+            print(f"status: {status}")
             if status :
                 return jsonify({
                     "Status": "Success",

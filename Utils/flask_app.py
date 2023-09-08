@@ -14,6 +14,7 @@ def home() :
     if request.method == "POST" :
         response = request.json
         login_details = {key: response[key] for key in response if key in ["Userid", "Password"]}
+        sem, branch = response["Sem"], response["Branch"]
         if login_details["Userid"] == "" :
             return jsonify({
                 "Status": "Failure",
@@ -21,7 +22,7 @@ def home() :
             })
 
         data = get_attendence_details(login_details)
-        classes_count = db_manager.total_no_classes()
+        classes_count = db_manager.total_no_classes(sem, branch)
         print(data)
         data["Total_classes"] = classes_count
         

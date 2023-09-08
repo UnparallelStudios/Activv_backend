@@ -25,11 +25,4 @@ class DbManager :
         """Total no of classes per subject"""
         # Load the user's database onto memory
         self.load_db(sem, branch)
-        if self.collection is not None :
-            return self.collection.find({}, {"_id": 0})[0]
-        else :
-            return None
-        
-    def logout(self) :
-        self.db = None
-        self.collection = None
+        return self.collection.find({}, {"_id": 0})[0]

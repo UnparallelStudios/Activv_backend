@@ -14,7 +14,7 @@ def home() :
     if request.method == "POST" :
         response = request.json
         login_details = {key: response[key] for key in response if key in ["Userid", "Password"]}
-        sem, branch = response["Sem"], response["Branch"]
+        pass_out_year, branch = response["Year"], response["Branch"]
         if login_details["Userid"] == "" :
             return jsonify({
                 "Status": "Failure",
@@ -22,7 +22,7 @@ def home() :
             })
 
         data = get_attendence_details(login_details)
-        classes_count = db_manager.total_no_classes(sem, branch)
+        classes_count = db_manager.total_no_classes(pass_out_year, branch)
         print(data)
         data["Total_classes"] = classes_count
         
@@ -57,7 +57,7 @@ def login_pg() :
     if request.method == "POST" :
         response = request.json
         login_details = {key: response[key] for key in response if key in ["Userid", "Password"]}
-        sem, branch = response["Sem"], response["Branch"]
+        pass_out_year, branch = response["Year"], response["Branch"]
 
         user_details = extract_profile_details(login_details)
         print(user_details)
@@ -70,12 +70,18 @@ def login_pg() :
             })
 
         else :
-            db_manager.load_db(sem, branch)
+            status = db_manager.load_db(pass_out_year, branch)
             
-            return jsonify({
-                "Status": "Success",
-                "Response": "User has been successfully logged in"
-            })
+            if status :
+                return jsonify({
+                    "Status": "Success",
+                    "Response": "User has been successfully logged in"
+                })
+            else :
+                return jsonify({
+                    "Status": "Failure",
+                    "Response": "Invalid Branch or Year details"
+                })
 
 
 

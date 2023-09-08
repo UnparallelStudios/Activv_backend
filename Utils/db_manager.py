@@ -1,6 +1,5 @@
 import os
 
-from datetime import datetime
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
@@ -15,14 +14,24 @@ class DbManager :
         self.collection = None
 
 
-    def load_db(self, sem, branch) :
+    def load_db(self, pass_out_year, branch) :
         # finds the appropriate database from the current year and the given semester
-        self.db = self.client[f"{sem}-{datetime.today().year}"]
-        self.collection = self.db[branch]
+        db_names = self.client.list_database_names()
+        if pass_out_year in db_names :
+            self.db = self.client[str(pass_out_year)]
+            if branch in self.db.list_collection_names() :
+                self.collection = self.db[branch]
+                return 1
+        
+        self.db = None
+        return 0
 
         
-    def total_no_classes(self, sem, branch) :
+    def total_no_classes(self, pass_out_year, branch) :
         """Total no of classes per subject"""
         # Load the user's database onto memory
-        self.load_db(sem, branch)
-        return self.collection.find({}, {"_id": 0})[0]
+        status = self.load_db(pass_out_year, branch)
+        if status :
+            return self.collection.find({}, {"_id": 0})[0]
+        else :
+            return None

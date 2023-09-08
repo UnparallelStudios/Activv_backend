@@ -78,11 +78,6 @@ def login_pg() :
             })
 
 
-@app.route("/logout", methods=["POST"])
-def logout() :
-    if request.method == "POST" :
-        db_manager.logout()
-
 
 if __name__ == "__main__" :
     app.run(debug=True)

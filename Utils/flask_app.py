@@ -14,16 +14,15 @@ def home() :
     if request.method == "POST" :
         response = request.json
         login_details = {key: response[key] for key in response if key in ["Userid", "Password"]}
-        pass_out_year, branch = response["Year"], response["Branch"]
+        pass_out_year, branch, sem = response["Year"], response["Branch"], response["Sem"]
         if login_details["Userid"] == "" :
             return jsonify({
                 "Status": "Failure",
                 "Response" : "User not logged in"
             })
 
-        data = get_attendence_details(login_details)
+        data = get_attendence_details(login_details, sem, branch)
         classes_count = db_manager.total_no_classes(pass_out_year, branch)
-        print(data)
         data["Total_classes"] = classes_count
         
         return jsonify({

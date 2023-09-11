@@ -35,3 +35,21 @@ class DbManager :
             return self.collection.find({}, {"_id": 0})[0]
         else :
             return None
+        
+    
+    def update_classes(self, classes, pass_out_year, branch) :
+        status = self.load_db(pass_out_year, branch)
+        if status :
+            class_total = self.collection.find_one()
+            print(f"Initial database looked like: {class_total}")
+            id = class_total["_id"]
+            for period in classes :
+                class_total[period] += int(classes[period])
+            
+            # Update the db
+            self.collection.update_one({'_id':id}, {"$set": class_total}, upsert=False)
+            print(f"Updated database looks like: {class_total}")
+            
+            return 1
+        else :
+            return 0

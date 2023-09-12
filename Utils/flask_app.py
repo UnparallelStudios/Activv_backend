@@ -18,7 +18,7 @@ def home() :
             return jsonify({
                 "Status": "Failure",
                 "Response" : "User not logged in"
-            })
+            }), 401
 
         data = get_attendence_details(login_details, sem, branch)
         classes_count = db_manager.total_no_classes(pass_out_year, branch)
@@ -39,7 +39,7 @@ def profile_pg() :
             return jsonify({
                 "Status": "Failure",
                 "Response" : "User not logged in"
-            })
+            }), 401
 
         user_details = extract_profile_details(login_details)
         print(user_details)
@@ -65,7 +65,7 @@ def login_pg() :
             return jsonify({
                 "Status": "Failure",
                 "Response": "Wrong username or password"
-            })
+            }), 401
 
         else :
             status = db_manager.load_db(pass_out_year, branch)
@@ -85,7 +85,7 @@ def login_pg() :
                 return jsonify({
                     "Status": "Failure",
                     "Response": "Invalid Branch or Year details"
-                })
+                }), 401
 
 
 @app.route("/edit/classes", methods=["POST"])
@@ -106,7 +106,7 @@ def classes_update_pg() :
             return jsonify({
                 "Status": "Failure",
                 "Response": "Invalid Branch or Year details"
-            })
+            }), 401
 
 
 

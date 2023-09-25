@@ -14,11 +14,12 @@ class DbManager :
         self.collection = None
 
 
-    def load_db(self, pass_out_year, branch) :
+    def load_db(self, sem, pass_out_year, branch) :
         # finds the appropriate database from the current year and the given semester
         db_names = self.client.list_database_names()
-        if pass_out_year in db_names :
-            self.db = self.client[str(pass_out_year)]
+        db_name = sem+str(pass_out_year)
+        if db_name in db_names :
+            self.db = self.client[db_name]
             if branch in self.db.list_collection_names() :
                 self.collection = self.db[branch]
                 return 1
@@ -27,18 +28,18 @@ class DbManager :
         return 0
 
         
-    def total_no_classes(self, pass_out_year, branch) :
+    def total_no_classes(self, sem, pass_out_year, branch) :
         """Total no of classes per subject"""
         # Load the user's database onto memory
-        status = self.load_db(pass_out_year, branch)
+        status = self.load_db(sem, pass_out_year, branch)
         if status :
             return self.collection.find({}, {"_id": 0})[0]
         else :
             return None
         
     
-    def update_classes(self, classes, pass_out_year, branch) :
-        status = self.load_db(pass_out_year, branch)
+    def update_classes(self, sem, classes, pass_out_year, branch) :
+        status = self.load_db(sem, pass_out_year, branch)
         if status :
             class_total = self.collection.find_one()
             print(f"Initial database looked like: {class_total}")

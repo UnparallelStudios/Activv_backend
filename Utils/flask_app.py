@@ -21,7 +21,7 @@ def home() :
             }), 401
 
         data = get_attendence_details(login_details, sem, branch)
-        classes_count = db_manager.total_no_classes(pass_out_year, branch)
+        classes_count = db_manager.total_no_classes(sem, pass_out_year, branch)
         data["Total_classes"] = classes_count
         
         return jsonify({
@@ -68,10 +68,10 @@ def login_pg() :
             }), 401
 
         else :
-            status = db_manager.load_db(pass_out_year, branch)
+            status = db_manager.load_db(sem, pass_out_year, branch)
             
             data = get_attendence_details(login_details, sem, branch)
-            classes_count = db_manager.total_no_classes(pass_out_year, branch)
+            classes_count = db_manager.total_no_classes(sem, pass_out_year, branch)
             data["Total_classes"] = classes_count
             
             if status :
@@ -93,9 +93,9 @@ def classes_update_pg() :
     if request.method == "POST" :
         response = request.json
         classes = response["Classes"]
-        pass_out_year, branch = response["Year"], response["Branch"]
+        pass_out_year, branch, sem = response["Year"], response["Branch"], response["Sem"]
         
-        status = db_manager.update_classes(classes, pass_out_year, branch)
+        status = db_manager.update_classes(sem, classes, pass_out_year, branch)
         
         if status :
             return jsonify({

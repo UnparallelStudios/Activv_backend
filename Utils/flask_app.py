@@ -1,7 +1,10 @@
+import datetime
+import requests
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from Utils.login import get_attendence_details, extract_profile_details
 from Utils.db_manager import DbManager
+from timetable import time_table
 
 app = Flask(__name__)
 CORS(app)
@@ -109,6 +112,22 @@ def classes_update_pg() :
             }), 401
 
 
+@app.route("/auto-updater", methods=["GET"])
+def auto_updater() :
+    cur_dt = datetime.datetime.now()
+    week = cur_dt.weekday()
+    ret_dict = {
+        "Sem" : "S5",
+        "Branch": "AID",
+        "Year": "2025",
+        "Classes": time_table[week]
+    }
+    res = requests.post('http://activv.onrender.com/edit/classes', json=ret_dict)
+    
+    return jsonify({
+        "Status": "Success",
+        "Response": "Class details have been updated"
+    })
 
 
 if __name__ == "__main__" :

@@ -7,3 +7,5 @@ bs4
 gunicorn==20.1.0
 pymongo==4.5.0
 python-dotenv
+datetime
+requests

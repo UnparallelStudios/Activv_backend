@@ -116,13 +116,15 @@ def classes_update_pg() :
 def auto_updater() :
     cur_dt = datetime.datetime.now()
     week = cur_dt.weekday()
-    ret_dict = {
-        "Sem" : "S5",
-        "Branch": "AID",
-        "Year": "2025",
-        "Classes": time_table[week]
-    }
-    res = requests.post('http://activv.onrender.com/edit/classes', json=ret_dict)
+    tt_today = time_table[week]
+    if tt_today :
+        ret_dict = {
+            "Sem" : "S5",
+            "Branch": "AID",
+            "Year": "2025",
+            "Classes": tt_today
+        }
+        res = requests.post('http://activv.onrender.com/edit/classes', json=ret_dict)
     
     return jsonify({
         "Status": "Success",

@@ -130,5 +130,15 @@ def auto_updater() :
     })
 
 
+@app.route("/wakeup", methods=["GET"])
+def wakeup() :
+    print("Waking up the server")
+    
+    return jsonify({
+        "Status": "Success",
+        "Response": "Server has woken up"
+    })
+
+
 if __name__ == "__main__" :
     app.run(debug=True)

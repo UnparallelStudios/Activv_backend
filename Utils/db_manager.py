@@ -1,4 +1,5 @@
 import os
+import datetime
 
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
@@ -46,6 +47,7 @@ class DbManager :
             id = class_total["_id"]
             for period in classes :
                 class_total[period] += int(classes[period])
+            class_total["last_updated"] = datetime.datetime.now()
             
             # Update the db
             self.collection.update_one({'_id':id}, {"$set": class_total}, upsert=False)

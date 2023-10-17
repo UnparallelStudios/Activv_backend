@@ -34,7 +34,10 @@ class DbManager :
         # Load the user's database onto memory
         status = self.load_db(sem, pass_out_year, branch)
         if status :
-            return self.collection.find({}, {"_id": 0})[0]
+            total_classes = self.collection.find({}, {"_id": 0})[0]
+            timestamp = total_classes["last_updated"]
+            del total_classes["last_updated"]
+            return total_classes, timestamp
         else :
             return None
         

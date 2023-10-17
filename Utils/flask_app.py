@@ -24,8 +24,9 @@ def home() :
             }), 401
 
         data = get_attendence_details(login_details, sem, branch)
-        classes_count = db_manager.total_no_classes(sem, pass_out_year, branch)
+        classes_count, timestamp = db_manager.total_no_classes(sem, pass_out_year, branch)
         data["Total_classes"] = classes_count
+        data["Last_updated"] = timestamp
         
         return jsonify({
                 "Status": "Success",
@@ -74,8 +75,9 @@ def login_pg() :
             status = db_manager.load_db(sem, pass_out_year, branch)
             
             data = get_attendence_details(login_details, sem, branch)
-            classes_count = db_manager.total_no_classes(sem, pass_out_year, branch)
+            classes_count, timestamp = db_manager.total_no_classes(sem, pass_out_year, branch)
             data["Total_classes"] = classes_count
+            data["Last_updated"] = timestamp
             
             if status :
                 return jsonify({

@@ -1,12 +1,11 @@
 courseCodes = {
-    "101008/MA400A": "IS",
-    "101903/MA400B": "GT",
-    "101008/IT400C": "DV",
-    "101008/IT400D": "DBMS",
-    "101908/EN900E": "PE",
-    "101908/ES400F": "COI",
-    "101008/IT401H": "HONORS",
-    "601902/IT930N": "ADDON",
-    "101008/IT422S": "DV LAB",
-    "101008/IT422T": "DBMS LAB"
+  "101008/MA500A": "Topology",
+  "101008/MA500B": "Fuzzy sets",
+  "101008/IT500C": "Data Mining",
+  "101008/IT500D": "AI",
+  "101902/IT500E": "Management for SE",
+  "101908/CO500F": "Disaster Management",
+  "101008/IT522S": "AI Lab",
+  "101008/IT522T": "Data Mining Lab",
+  "101008/IT501H": "Honours"
 }

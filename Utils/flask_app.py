@@ -10,6 +10,8 @@ app = Flask(__name__)
 CORS(app)
 db_manager = DbManager()
 
+SEM = "S6"
+
 @app.route("/home", methods=["POST"])
 @app.route("/", methods=["POST"])
 def home() :
@@ -121,7 +123,7 @@ def auto_updater() :
     tt_today = time_table[week]
     if tt_today :
         ret_dict = {
-            "Sem" : "S5",
+            "Sem" : SEM,
             "Branch": "AID",
             "Year": "2025",
             "Classes": tt_today
